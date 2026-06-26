@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contrarion — The Public Square</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Press Colors */
+    --paper: #FDFBF7;
+    --ink: #1A1A1A;
+    --accent-brown: #8B4513;
+    --border-light: #E8E4D9;
+    
+    /* Board Colors */
+    --cork: #8B7355;
+    --cork-dark: #6B563E;
+    --note-yellow: #FFF9A8;
+    --note-pink: #FFD1DC;
+    --note-mint: #C1E1C1;
+    --note-blue: #AEC6CF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cormorant Garamond', serif;
+    background-color: #f4f1ea;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+
+  /* ===== NAVIGATION ===== */
+  nav {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 4px solid var(--accent-brown);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    letter-spacing: 4px;
+    font-weight: 900;
+  }
+  .nav-links {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .nav-links a {
+    color: rgba(253, 251, 247, 0.7);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--paper);
+    border-bottom: 2px solid var(--accent-brown);
+    padding-bottom: 4px;
+  }
+
+  /* ===== MASTHEAD (The Tribune Style) ===== */
+  .masthead {
+    background: var(--paper);
+    text-align: center;
+    padding: 40px 20px 20px;
+    border-bottom: 3px double var(--ink);
+  }
+  .masthead-meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #666;
+    margin-bottom: 10px;
+  }
+  .masthead h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin: 10px 0;
+  }
+  .masthead-tagline {
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--accent-brown);
+    letter-spacing: 2px;
+  }
+
+  /* ===== MAIN GRID LAYOUT ===== */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+  }
+
+  /* ===== LEFT COLUMN: THE PRESS ===== */
+  .press-section {
+    background: var(--paper);
+    padding: 30px;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
+  .section-header {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent-brown);
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 8px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .featured-article h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    line-height: 1.1;
+    margin-bottom: 15px;
+  }
+  .featured-article .meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  .featured-article .meta span.hot-take {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-left: 10px;
+  }
+  .article-image {
+    width: 100%;
+    height: 250px;
+    background: linear-gradient(135deg, #d4c5b0, #a89f91);
+    margin-bottom: 20px;
+    border: 1px solid var(--border-light);
+  }
+  .article-excerpt {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  .article-excerpt::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    float: left;
+    line-height: 0.8;
+    margin-right: 10px;
+    color: var(--accent-brown);
+  }
+  .read-more {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent-brown);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent-brown);
+    padding-bottom: 2px;
+  }
+
+  /* Sub-articles grid */
+  .sub-articles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-light);
+  }
+  .sub-article h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+  .sub-article p {
+    font-size: 1rem;
+    color: #555;
+  }
+
+  /* ===== RIGHT COLUMN: THE BOARD (Corkboard) ===== */
+  .board-section {
+    background-color: var(--cork);
+    /* Subtle cork texture */
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(0,0,0,0.15) 1px, transparent 1px),
+      radial-gradient(circle at 70% 60%, rgba(0,0,0,0.1) 1px, transparent 1px),
+      radial-gradient(circle at 40% 80%, rgba(0,0,0,0.15) 1px, transparent 1px);
+    background-size: 30px 30px;
+    padding: 30px 20px;
+    border-radius: 4px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.3), 0 4px 15px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+  }
+  .board-header {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.2rem;
+    color: var(--paper);
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    margin-bottom: 10px;
+    letter-spacing: 2px;
+  }
+  
+  /* Sticky Notes */
+  .sticky-note {
+    padding: 20px;
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.2);
+    position: relative;
+    transition: transform 0.2s;
+  }
+  .sticky-note:hover {
+    transform: scale(1.02) rotate(0deg) !important;
+    z-index: 10;
+  }
+  .sticky-note::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  .note-yellow { background: var(--note-yellow); transform: rotate(-2deg); }
+  .note-yellow::before { background: #D32F2F; } /* Red pin */
+  .note-pink { background: var(--note-pink); transform: rotate(1.5deg); }
+  .note-pink::before { background: #1976D2; } /* Blue pin */
+  .note-mint { background: var(--note-mint); transform: rotate(-1deg); }
+  .note-mint::before { background: #388E3C; } /* Green pin */
+
+  .sticky-note p {
+    font-family: 'Caveat', cursive;
+    font-size: 1.3rem;
+    color: #2a2a2a;
+    line-height: 1.3;
+  }
+  .note-meta {
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    color: #555;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ===== BOTTOM ROW: ARCADE & POLL ===== */
+  .bottom-row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 20px;
+  }
+
+  /* Arcade Card - Brown/White/Black Theme */
+  .arcade-card {
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    padding: 40px 30px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 6px 6px 0px var(--accent-brown);
+    position: relative;
+    overflow: hidden;
+  }
+  .arcade-card::before {
+    content: '🎮';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 8rem;
+    opacity: 0.05;
+    transform: rotate(15deg);
+  }
+  .arcade-label {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    color: var(--ink);
+    margin-bottom: 15px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .arcade-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+    color: var(--accent-brown);
+    font-style: italic;
+  }
+  .play-btn {
+    background: var(--ink);
+    color: var(--paper);
+    border: 2px solid var(--ink);
+    padding: 14px 40px;
+    border-radius: 4px;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .play-btn:hover { 
+    background: var(--paper);
+    color: var(--ink);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+
+  /* Poll Card (Mixed style) */
+  .poll-card {
+    background: var(--paper);
+    padding: 30px;
+    border: 1px solid var(--border-light);
+    border-left: 6px solid var(--cork);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
+  .poll-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+  .poll-question {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+  .poll-option {
+    margin-bottom: 12px;
+  }
+  .poll-bar-bg {
+    height: 10px;
+    background: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 5px;
+  }
+  .poll-bar-fill {
+    height: 100%;
+    background: var(--accent-brown);
+  }
+  .poll-stats {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 4px;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    .container { grid-template-columns: 1fr; }
+    .bottom-row { grid-template-columns: 1fr; }
+    .masthead h1 { font-size: 3rem; }
+    .sub-articles { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">CONTRARION</div>
+  <ul class="nav-links">
+    <li><a href="#" class="active">The Public Square</a></li>
+    <li><a href="#">The Press</a></li>
+    <li><a href="#">The Board</a></li>
+    <li><a href="#">The Arcade</a></li>
+  </ul>
+  <div style="font-family: 'Inter'; font-size: 0.85rem; cursor: pointer;">Login / Sign Up</div>
+</nav>
+
+<header class="masthead">
+  <div class="masthead-meta">Vol. I · No. 1 · Friday, June 26, 2026</div>
+  <h1>CONTRARION</h1>
+  <div class="masthead-tagline">Opinions · Articles · Community · Games</div>
+</header>
+
+<div class="container">
+  
+  <!-- LEFT: THE PRESS -->
+  <section class="press-section">
+    <div class="section-header">
+      <span>📰 Front Page</span>
+      <span>Featured Story</span>
+    </div>
+    
+    <article class="featured-article">
+      <h2>Is the Algorithm Killing Originality or Freeing the Next Generation?</h2>
+      <div class="meta">By Amara Osei · Opinion Editor · 2 Hrs Ago <span class="hot-take">HOT TAKE</span></div>
+      <div class="article-image"></div>
+      <p class="article-excerpt">We scroll, we like, we share — and somewhere in that endless loop, the ideas that were supposed to be ours quietly become everyone else's. The feed is the new editor-in-chief, and nobody voted for it. Yet a counter-argument is gaining ground among students here...</p>
+      <a href="#" class="read-more">Read Full Article →</a>
+    </article>
+
+    <div class="sub-articles">
+      <div class="sub-article">
+        <h3>We surveyed 200 students about the canteen. The results were bleak.</h3>
+        <p>Soggy chips. Lukewarm soup. A "chicken" option that confounds science. We have receipts.</p>
+      </div>
+      <div class="sub-article">
+        <h3>Freshers mixer at Hall B, Saturday 7pm</h3>
+        <p>Free food, live DJ, and the famous Trivia Gauntlet returns. Bring your student ID. All welcome.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RIGHT: THE BOARD -->
+  <aside class="board-section">
+    <div class="board-header">OH BOY!</div>
+    
+    <div class="sticky-note note-yellow">
+      <p>"Pineapple on pizza is elite and I will die on this hill 👁️👁️"</p>
+      <div class="note-meta"><span>@PizzaLover99</span><span>🔥 148</span></div>
+    </div>
+
+    <div class="sticky-note note-pink">
+      <p>"Group projects should count for no more than 10% of any grade. Full stop."</p>
+      <div class="note-meta"><span>@TiredStudent</span><span>🔥 412</span></div>
+    </div>
+
+    <div class="sticky-note note-mint">
+      <p>"The campus coffee shop is overpriced AND they always get my order wrong."</p>
+      <div class="note-meta"><span>@CaffeineFix</span><span>🔥 89</span></div>
+    </div>
+  </aside>
+
+  <!-- BOTTOM ROW -->
+  <div class="bottom-row">
+    
+    <!-- ARCADE -->
+    <div class="arcade-card">
+      <div class="arcade-label">Arcade</div>
+      <h3>Would You Survive?</h3>
+      <button class="play-btn">Play now!</button>
+    </div>
+
+    <!-- POLL -->
+    <div class="poll-card">
+      <div class="section-header" style="border-bottom-color: var(--cork); color: var(--cork-dark);">
+        <span>📊 Poll of the Day</span>
+      </div>
+      <h4>Should lectures be recorded and uploaded automatically?</h4>
+      
+      <div class="poll-option">
+        <div class="poll-stats"><span>Yes, always</span><span>61%</span></div>
+        <div class="poll-bar-bg"><div class="poll-bar-fill" style="width: 61%;"></div></div>
+      </div>
+      <div class="poll-option">
+        <div class="poll-stats"><span>Sometimes</span><span>24%</span></div>
+        <div class="poll-bar-bg"><div class="poll-bar-fill" style="width: 24%; background: #bfa88e;"></div></div>
+      </div>
+      <div class="poll-option">
+        <div class="poll-stats"><span>No, live only</span><span>15%</span></div>
+        <div class="poll-bar-bg"><div class="poll-bar-fill" style="width: 15%; background: #8B7355;"></div></div>
+      </div>
+      <p style="font-size: 0.8rem; color: #888; margin-top: 15px; font-family: 'Inter';">843 votes · Tap to vote</p>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>
