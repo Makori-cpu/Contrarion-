@@ -386,12 +386,13 @@
 <nav>
   <div class="nav-logo">CONTRARION</div>
   <ul class="nav-links">
-    <li><a href="#" class="active">The Public Square</a></li>
-    <li><a href="#">The Press</a></li>
-    <li><a href="#">The Board</a></li>
-    <li><a href="#">The Arcade</a></li>
+    <li><a href="index.html" class="active">The Public Square</a></li>
+    <li><a href="press.html">The Press</a></li>
+    <li><a href="board.html">The Board</a></li>
+    <li><a href="arcade.html">The Arcade</a></li>
+    <li><a href="login.html">Login / Sign Up</a></li>
   </ul>
-  <div style="font-family: 'Inter'; font-size: 0.85rem; cursor: pointer;">Login / Sign Up</div>
+  <div style="font-family: 'Inter'; font-size: 0.85rem; cursor: pointer;" onclick="window.location.href='auth.html'">Login / Sign Up</div>
 </nav>
 
 <header class="masthead">
@@ -482,8 +483,10 @@
     </div>
 
   </div>
-
 </div>
-
+<script>
+  function goLogin() { window.location.href = "auth.html"; }
+  function goSignup() { window.location.href = "auth.html"; }
+</script>
 </body>
 </html>
