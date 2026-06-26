@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contrarion — The Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FDFBF7;
+    --ink: #1A1A1A;
+    --accent-brown: #8B4513;
+    --border-light: #E8E4D9;
+    --cork: #8B7355;
+    --cork-dark: #6B563E;
+    --note-yellow: #FFF9A8;
+    --note-pink: #FFD1DC;
+    --note-mint: #C1E1C1;
+    --note-blue: #AEC6CF;
+    --note-lavender: #E6D5F0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cormorant Garamond', serif;
+    background-color: var(--cork);
+    background-image: 
+      radial-gradient(circle at 15% 25%, rgba(0,0,0,0.12) 1px, transparent 1px),
+      radial-gradient(circle at 65% 55%, rgba(0,0,0,0.08) 1px, transparent 1px),
+      radial-gradient(circle at 35% 75%, rgba(0,0,0,0.12) 1px, transparent 1px),
+      radial-gradient(circle at 85% 15%, rgba(0,0,0,0.08) 1px, transparent 1px),
+      radial-gradient(circle at 50% 50%, rgba(0,0,0,0.06) 1px, transparent 1px);
+    background-size: 28px 28px, 35px 35px, 22px 22px, 40px 40px, 18px 18px;
+    color: var(--ink);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ===== NAVIGATION ===== */
+  nav {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 4px solid var(--accent-brown);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    letter-spacing: 4px;
+    font-weight: 900;
+  }
+  .nav-links {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .nav-links a {
+    color: rgba(253, 251, 247, 0.7);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--paper);
+    border-bottom: 2px solid var(--accent-brown);
+    padding-bottom: 4px;
+  }
+
+  /* ===== PAGE HEADER ===== */
+  .page-header {
+    text-align: center;
+    padding: 50px 20px 30px;
+  }
+  .page-header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 5rem;
+    color: var(--paper);
+    text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+    letter-spacing: 6px;
+    position: relative;
+    display: inline-block;
+  }
+  .page-header h1::after {
+    content: '📌';
+    position: absolute;
+    top: -15px;
+    right: -40px;
+    font-size: 2rem;
+  }
+  .page-header h1::before {
+    content: '📌';
+    position: absolute;
+    top: -15px;
+    left: -40px;
+    font-size: 2rem;
+  }
+  .page-subtitle {
+    font-family: 'Caveat', cursive;
+    font-size: 1.4rem;
+    color: rgba(253, 251, 247, 0.8);
+    margin-top: 10px;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+  }
+
+  /* ===== BOARD CONTAINER ===== */
+  .board-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px 30px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+  }
+
+  /* ===== OPINION CARD (Sticky Note + optional slide) ===== */
+  .opinion-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 650px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .opinion-card:nth-child(odd) {
+    margin-left: 5%;
+  }
+  .opinion-card:nth-child(even) {
+    margin-right: 5%;
+  }
+
+  /* ===== STICKY NOTE ===== */
+  .sticky-note {
+    width: 100%;
+    padding: 30px 28px 25px;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.25);
+    position: relative;
+    transition: transform 0.3s ease;
+  }
+  .sticky-note:hover {
+    transform: scale(1.02) rotate(0deg) !important;
+    z-index: 10;
+    box-shadow: 6px 6px 18px rgba(0,0,0,0.3);
+  }
+
+  /* Push Pin */
+  .sticky-note::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    z-index: 2;
+  }
+
+  /* Note Colors */
+  .note-yellow { background: var(--note-yellow); transform: rotate(-1.5deg); }
+  .note-yellow::before { background: #D32F2F; }
+
+  .note-pink { background: var(--note-pink); transform: rotate(2deg); }
+  .note-pink::before { background: #1976D2; }
+
+  .note-mint { background: var(--note-mint); transform: rotate(-2.5deg); }
+  .note-mint::before { background: #F9A825; }
+
+  .note-blue { background: var(--note-blue); transform: rotate(1deg); }
+  .note-blue::before { background: #D32F2F; }
+
+  .note-lavender { background: var(--note-lavender); transform: rotate(-1deg); }
+  .note-lavender::before { background: #388E3C; }
+
+  /* Opinion Title */
+  .opinion-title {
+    font-family: 'Caveat', cursive;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.2;
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 2px dashed rgba(0,0,0,0.15);
+  }
+
+  /* Opinion Explanation */
+  .opinion-body {
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: #333;
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
+
+  /* Note Footer */
+  .note-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    color: #555;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(0,0,0,0.1);
+  }
+  .note-footer .author {
+    font-weight: 600;
+  }
+  .note-footer .stats {
+    display: flex;
+    gap: 15px;
+  }
+
+  /* ===== BURNT PAPER SLIDE ===== */
+  .burnt-slide {
+    width: 90%;
+    margin-top: -5px;
+    position: relative;
+    z-index: -1;
+  }
+  .burnt-slide-inner {
+    background: #2a2218;
+    padding: 12px;
+    position: relative;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    /* Torn/burnt edges */
+    clip-path: polygon(
+      2% 0%, 5% 2%, 8% 0%, 12% 1%, 15% 0%, 20% 2%, 25% 0%, 
+      30% 1%, 35% 0%, 40% 2%, 45% 0%, 50% 1%, 55% 0%, 60% 2%, 
+      65% 0%, 70% 1%, 75% 0%, 80% 2%, 85% 0%, 90% 1%, 95% 0%, 98% 2%,
+      100% 5%, 99% 10%, 100% 15%, 99% 20%, 100% 25%, 99% 30%,
+      100% 35%, 99% 40%, 100% 45%, 99% 50%, 100% 55%, 99% 60%,
+      100% 65%, 99% 70%, 100% 75%, 99% 80%, 100% 85%, 99% 90%, 100% 95%,
+      98% 100%, 95% 98%, 90% 100%, 85% 99%, 80% 100%, 75% 98%,
+      70% 100%, 65% 99%, 60% 100%, 55% 98%, 50% 100%, 45% 99%,
+      40% 100%, 35% 98%, 30% 100%, 25% 99%, 20% 100%, 15% 98%,
+      10% 100%, 5% 99%, 2% 100%, 0% 95%,
+      1% 90%, 0% 85%, 1% 80%, 0% 75%, 1% 70%, 0% 65%,
+      1% 60%, 0% 55%, 1% 50%, 0% 45%, 1% 40%, 0% 35%,
+      1% 30%, 0% 25%, 1% 20%, 0% 15%, 1% 10%, 0% 5%
+    );
+  }
+  .burnt-slide img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    filter: sepia(0.4) contrast(1.1) brightness(0.9);
+    border: 1px solid #4a3f2f;
+  }
+  .slide-caption {
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    color: #b8a88a;
+    text-align: center;
+    padding: 8px 0 4px;
+    font-style: italic;
+  }
+
+  /* Charred edge overlay */
+  .burnt-slide-inner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 0% 0%, rgba(60,30,10,0.6) 0%, transparent 30%),
+      radial-gradient(ellipse at 100% 0%, rgba(60,30,10,0.5) 0%, transparent 25%),
+      radial-gradient(ellipse at 100% 100%, rgba(60,30,10,0.6) 0%, transparent 30%),
+      radial-gradient(ellipse at 0% 100%, rgba(60,30,10,0.5) 0%, transparent 25%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ===== ADD YOUR TAKE BUTTON ===== */
+  .add-take {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .add-take-btn {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    color: var(--paper);
+    background: var(--accent-brown);
+    border: 3px dashed rgba(253,251,247,0.4);
+    padding: 18px 45px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.3);
+  }
+  .add-take-btn:hover {
+    background: var(--ink);
+    transform: translateY(-3px) rotate(-1deg);
+    box-shadow: 6px 6px 0px rgba(0,0,0,0.4);
+  }
+
+  /* ===== FOOTER ===== */
+  .page-footer {
+    text-align: center;
+    padding: 30px 20px 40px;
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: rgba(253, 251, 247, 0.6);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .page-header h1 { font-size: 3rem; }
+    .opinion-card:nth-child(odd),
+    .opinion-card:nth-child(even) { margin: 0 auto; }
+    .sticky-note { padding: 22px 20px 20px; }
+    .opinion-title { font-size: 1.5rem; }
+    .opinion-body { font-size: 1.1rem; }
+    .nav-links { gap: 15px; font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">CONTRARION</div>
+  <ul class="nav-links">
+    <li><a href="home.html">The Public Square</a></li>
+    <li><a href="press.html">The Press</a></li>
+    <li><a href="board.html" class="active">The Board</a></li>
+    <li><a href="arcade.html">The Arcade</a></li>
+  </ul>
+  <div style="font-family: 'Inter'; font-size: 0.85rem; cursor: pointer;">Login / Sign Up</div>
+</nav>
+
+<header class="page-header">
+  <h1>OH BOY!</h1>
+  <p class="page-subtitle">Pin your truth. Let it burn.</p>
+</header>
+
+<div class="board-container">
+
+  <!-- ===== OPINION 1: With Slide ===== -->
+  <div class="opinion-card">
+    <div class="sticky-note note-yellow">
+      <div class="opinion-title">"Pineapple on pizza is elite and I will die on this hill 🍍"</div>
+      <div class="opinion-body">
+        People act like putting fruit on food is some kind of crime, but sweet and savoury is the foundation of half the world's best cuisines. The acidity cuts through the fat of the cheese. The caramelisation adds depth. If you can't handle complexity in your toppings, maybe you can't handle complexity in life.
+      </div>
+      <div class="note-footer">
+        <span class="author">@PizzaLover99</span>
+        <div class="stats"><span>🔥 148</span> <span>💬 42</span></div>
+      </div>
+    </div>
+    <div class="burnt-slide">
+      <div class="burnt-slide-inner">
+        <img src="slide1.jpg" alt="Supporting slide">
+        <div class="slide-caption">Exhibit A: The perfect slice 🍕</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== OPINION 2: With Slide ===== -->
+  <div class="opinion-card">
+    <div class="sticky-note note-pink">
+      <div class="opinion-title">"Being alone is better than being in a relationship for most people"</div>
+      <div class="opinion-body">
+        We've been sold this lie that a relationship is the ultimate goal of human existence. But most people jump into relationships because they're terrified of silence. When you can sit alone in a room and feel complete — that's when you're actually ready for someone else. Until then, you're just using people as noise.
+      </div>
+      <div class="note-footer">
+        <span class="author">@QuietStorm</span>
+        <div class="stats"><span>🔥 312</span> <span>💬 87</span></div>
+      </div>
+    </div>
+    <div class="burnt-slide">
+      <div class="burnt-slide-inner">
+        <img src="slide2.jpg" alt="Supporting slide">
+        <div class="slide-caption">Connected, yet disconnected 📱</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== OPINION 3: Sticky Note Only ===== -->
+  <div class="opinion-card">
+    <div class="sticky-note note-mint">
+      <div class="opinion-title">"Most self-help books are just procrastination disguised as progress"</div>
+      <div class="opinion-body">
+        You don't need another book telling you to wake up at 5am. You need to wake up and actually do the thing. Reading about discipline isn't discipline. Highlighting quotes about courage isn't courage. The self-help industry makes billions keeping you in the planning phase forever. Close the book. Start the work.
+      </div>
+      <div class="note-footer">
+        <span class="author">@NoMoreExcuses</span>
+        <div class="stats"><span>🔥 256</span> <span>💬 63</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== OPINION 4: With Slide ===== -->
+  <div class="opinion-card">
+    <div class="sticky-note note-blue">
+      <div class="opinion-title">"Spirituality without religion is just aesthetic"</div>
+      <div class="opinion-body">
+        Everyone wants the peace of meditation without the discipline of devotion. They want the community without the commitment. Burning sage and buying crystals feels good, but it asks nothing of you. Real spiritual growth requires structure, accountability, and the humility to submit to something older and wiser than your Instagram feed.
+      </div>
+      <div class="note-footer">
+        <span class="author">@OldSoul</span>
+        <div class="stats"><span>🔥 401</span> <span>💬 124</span></div>
+      </div>
+    </div>
+    <div class="burnt-slide">
+      <div class="burnt-slide-inner">
+        <img src="slide3.jpg" alt="Supporting slide">
+        <div class="slide-caption">Faith, fashion, or something deeper? 🕊️</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== OPINION 5: Sticky Note Only ===== -->
+  <div class="opinion-card">
+    <div class="sticky-note note-lavender">
+      <div class="opinion-title">"Tradition is just peer pressure from dead people"</div>
+      <div class="opinion-body">
+        We follow customs we can't explain, celebrate rituals whose origins we've forgotten, and shame anyone who questions them. Every tradition started because one person decided to do something new. The people who honour tradition most are ironically the ones most afraid to create their own. Maybe the most respectful thing you can do for your ancestors is to outgrow them.
+      </div>
+      <div class="note-footer">
+        <span class="author">@UnboundMind</span>
+        <div class="stats"><span>🔥 189</span> <span>💬 55</span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Add Your Take -->
+<div class="add-take">
+  <button class="add-take-btn">📌 Pin Your Take</button>
+</div>
+
+<footer class="page-footer">
+  The Board — Say what you're really thinking.
+</footer>
+
+</body>
+</html>

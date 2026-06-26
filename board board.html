@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contrarion — The Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Inter:wght@400;500;600&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FDFBF7;
+    --ink: #1A1A1A;
+    --accent-brown: #8B4513;
+    --cork: #8B7355;
+    --cork-dark: #6B563E;
+    --note-yellow: #FFF9A8;
+    --note-pink: #FFD1DC;
+    --note-mint: #C1E1C1;
+    --note-blue: #AEC6CF;
+    --note-orange: #FFD4A3;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--cork);
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(0,0,0,0.15) 2px, transparent 2px),
+      radial-gradient(circle at 70% 60%, rgba(0,0,0,0.1) 2px, transparent 2px),
+      radial-gradient(circle at 40% 80%, rgba(0,0,0,0.15) 2px, transparent 2px),
+      radial-gradient(circle at 90% 20%, rgba(0,0,0,0.12) 2px, transparent 2px);
+    background-size: 40px 40px, 50px 50px, 60px 60px, 45px 45px;
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ===== NAVIGATION ===== */
+  nav {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 4px solid var(--accent-brown);
+  }
+  .nav-logo {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    letter-spacing: 4px;
+  }
+  .nav-links {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .nav-links a {
+    color: rgba(253, 251, 247, 0.7);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--paper);
+    border-bottom: 2px solid var(--accent-brown);
+    padding-bottom: 4px;
+  }
+
+  /* ===== PAGE HEADER ===== */
+  .page-header {
+    text-align: center;
+    padding: 60px 20px 40px;
+  }
+  .page-header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 5rem;
+    color: var(--paper);
+    text-shadow: 4px 4px 8px rgba(0,0,0,0.4);
+    letter-spacing: 6px;
+  }
+  .page-header p {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    color: var(--paper);
+    margin-top: 10px;
+    opacity: 0.9;
+  }
+
+  /* ===== OPINIONS GRID ===== */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+  }
+
+  /* ===== OPINION CARD ===== */
+  .opinion-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* Sticky Note */
+  .sticky-note {
+    background: var(--paper);
+    padding: 30px 25px;
+    box-shadow: 4px 4px 12px rgba(0,0,0,0.25);
+    position: relative;
+    transition: transform 0.3s;
+    min-height: 200px;
+  }
+
+  .sticky-note:hover {
+    transform: scale(1.03) rotate(0deg) !important;
+    z-index: 10;
+  }
+
+  /* Push Pin */
+  .sticky-note::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.4);
+    z-index: 5;
+  }
+
+  /* Different colored notes and pins */
+  .note-yellow { background: var(--note-yellow); transform: rotate(-2deg); }
+  .note-yellow::before { background: #D32F2F; }
+
+  .note-pink { background: var(--note-pink); transform: rotate(1.5deg); }
+  .note-pink::before { background: #1976D2; }
+
+  .note-mint { background: var(--note-mint); transform: rotate(-1deg); }
+  .note-mint::before { background: #388E3C; }
+
+  .note-blue { background: var(--note-blue); transform: rotate(2deg); }
+  .note-blue::before { background: #F57C00; }
+
+  .note-orange { background: var(--note-orange); transform: rotate(-1.5deg); }
+  .note-orange::before { background: #7B1FA2; }
+
+  .opinion-title {
+    font-family: 'Caveat', cursive;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 15px;
+    line-height: 1.2;
+  }
+
+  .opinion-explanation {
+    font-family: 'Caveat', cursive;
+    font-size: 1.15rem;
+    color: #2a2a2a;
+    line-height: 1.4;
+    margin-bottom: 20px;
+  }
+
+  .opinion-meta {
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    color: #555;
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 15px;
+    border-top: 1px dashed rgba(0,0,0,0.2);
+  }
+
+  .opinion-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+  }
+
+  .action-btn {
+    background: rgba(0,0,0,0.1);
+    border: none;
+    padding: 6px 12px;
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    border-radius: 3px;
+  }
+
+  .action-btn:hover {
+    background: rgba(0,0,0,0.2);
+  }
+
+  /* ===== VINTAGE PHOTO SLIDE ===== */
+  .photo-slide {
+    background: white;
+    padding: 15px 15px 40px 15px;
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.3);
+    position: relative;
+    transform: rotate(1deg);
+  }
+
+  .photo-slide:nth-child(even) {
+    transform: rotate(-1deg);
+  }
+
+  .photo-slide img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    filter: sepia(0.3) contrast(0.9) brightness(0.95);
+  }
+
+  .photo-slide::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 30%;
+    width: 50px;
+    height: 20px;
+    background: rgba(200, 180, 100, 0.6);
+    transform: rotate(-5deg);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  }
+
+  .photo-caption {
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    color: #555;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  /* ===== FOOTER ===== */
+  .page-footer {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--paper);
+  }
+  .page-footer p {
+    font-family: 'Caveat', cursive;
+    font-size: 1.5rem;
+    opacity: 0.9;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .page-header h1 { font-size: 3rem; }
+    .container { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">CONTRARION</div>
+  <ul class="nav-links">
+    <li><a href="home.html">The Public Square</a></li>
+    <li><a href="press.html">The Press</a></li>
+    <li><a href="board.html" class="active">The Board</a></li>
+    <li><a href="arcade.html">The Arcade</a></li>
+  </ul>
+  <div style="font-family: 'Inter'; font-size: 0.85rem; cursor: pointer;">Login / Sign Up</div>
+</nav>
+
+<header class="page-header">
+  <h1>OH BOY!</h1>
+  <p>Unpopular opinions · Hot takes · Messy thoughts</p>
+</header>
+
+<div class="container">
+
+  <!-- OPINION 1 (with slide) - Spirituality -->
+  <div class="opinion-card">
+    <div class="sticky-note note-yellow">
+      <div class="opinion-title">Meditation apps are making spirituality a commodity</div>
+      <p class="opinion-explanation">We've turned inner peace into a subscription service. Ancient practices designed for enlightenment are now gamified with streaks and achievements. You can't buy your way to nirvana with a $12.99 monthly plan.</p>
+      <div class="opinion-actions">
+        <button class="action-btn">🔥 312</button>
+        <button class="action-btn">💬 89</button>
+      </div>
+      <div class="opinion-meta">
+        <span>@ZenSkeptic</span>
+        <span>3 hours ago</span>
+      </div>
+    </div>
+    <div class="photo-slide">
+      <img src="meditation-app.jpg" alt="Meditation app商业化">
+      <p class="photo-caption">Enlightenment sold separately</p>
+    </div>
+  </div>
+
+  <!-- OPINION 2 (with slide) - Religion & Modern Life -->
+  <div class="opinion-card">
+    <div class="sticky-note note-pink">
+      <div class="opinion-title">"Spiritual but not religious" is just intellectual cowardice</div>
+      <p class="opinion-explanation">It's easy to say you believe in "something" without committing to anything. Real faith requires community, accountability, and difficult choices. Picking and choosing beliefs like a buffet isn't spirituality — it's consumerism with incense.</p>
+      <div class="opinion-actions">
+        <button class="action-btn">🔥 567</button>
+        <button class="action-btn">💬 234</button>
+      </div>
+      <div class="opinion-meta">
+        <span>@DevoutDebater</span>
+        <span>6 hours ago</span>
+      </div>
+    </div>
+    <div class="photo-slide">
+      <img src="spiritual-buffet.jpg" alt="Spiritual but not religious">
+      <p class="photo-caption">Pick your truth, skip the rules</p>
+    </div>
+  </div>
+
+  <!-- OPINION 3 (with slide) - Culture -->
+  <div class="opinion-card">
+    <div class="sticky-note note-mint">
+      <div class="opinion-title">Cultural appropriation debates have gone too far</div>
+      <p class="opinion-explanation">Culture has ALWAYS been borrowed, stolen, and remixed. That's how it evolves. Appreciation and appropriation are different, but we've become so paranoid that sharing any tradition is now "problematic." Connection requires crossing boundaries.</p>
+      <div class="opinion-actions">
+        <button class="action-btn">🔥 445</button>
+        <button class="action-btn">💬 178</button>
+      </div>
+      <div class="opinion-meta">
+        <span>@CultureVulture</span>
+        <span>1 day ago</span>
+      </div>
+    </div>
+    <div class="photo-slide">
+      <img src="cultural-mixing.jpg" alt="Cultural exchange">
+      <p class="photo-caption">Where do we draw the line?</p>
+    </div>
+  </div>
+
+  <!-- OPINION 4 (no slide) - Social Life -->
+  <div class="opinion-card">
+    <div class="sticky-note note-blue">
+      <div class="opinion-title">Loneliness isn't an epidemic — it's a choice</div>
+      <p class="opinion-explanation">We have more ways to connect than any generation in history, yet we complain about being isolated. Turn off your phone. Join a club. Talk to strangers. Vulnerability is scary, but it's the only way out. Stop blaming technology for your avoidance.</p>
+      <div class="opinion-actions">
+        <button class="action-btn">🔥 289</button>
+        <button class="action-btn">💬 156</button>
+      </div>
+      <div class="opinion-meta">
+        <span>@ExtrovertElite</span>
+        <span>4 hours ago</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPINION 5 (no slide) - Faith & Reason -->
+  <div class="opinion-card">
+    <div class="sticky-note note-orange">
+      <div class="opinion-title">Atheists are just as dogmatic as religious fundamentalists</div>
+      <p class="opinion-explanation">The certainty that there is NO higher power requires just as much faith as believing there is one. Both sides refuse to admit the uncomfortable truth: we simply don't know. Humility is rare on both sides of this debate.</p>
+      <div class="opinion-actions">
+        <button class="action-btn">🔥 623</button>
+        <button class="action-btn">💬 312</button>
+      </div>
+      <div class="opinion-meta">
+        <span>@AgnosticAmbassador</span>
+        <span>8 hours ago</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="page-footer">
+  <p>Say what you're really thinking · Pin your thoughts to the board</p>
+</footer>
+
+</body>
+</html>
