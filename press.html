@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contrarion — The Press</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&family=Fredoka+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FDFBF7;
+    --ink: #1A1A1A;
+    --accent-brown: #8B4513;
+    --border-light: #E8E4D9;
+    --cork: #8B7355;
+    --note-yellow: #FFF9A8;
+    --note-pink: #FFD1DC;
+    --note-mint: #C1E1C1;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cormorant Garamond', serif;
+    background-color: #f4f1ea;
+    color: var(--ink);
+    line-height: 1.6;
+  }
+
+  /* ===== NAVIGATION ===== */
+  nav {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 4px solid var(--accent-brown);
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    letter-spacing: 4px;
+    font-weight: 900;
+  }
+  .nav-links {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .nav-links a {
+    color: rgba(253, 251, 247, 0.7);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--paper);
+    border-bottom: 2px solid var(--accent-brown);
+    padding-bottom: 4px;
+  }
+
+  /* ===== PAGE HEADER ===== */
+  .page-header {
+    background: var(--paper);
+    text-align: center;
+    padding: 40px 20px;
+    border-bottom: 3px double var(--ink);
+  }
+  .page-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: 8px;
+    color: var(--ink);
+  }
+
+  /* ===== MAIN LAYOUT ===== */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+  }
+
+  /* ===== MAIN ARTICLE ===== */
+  .main-article {
+    background: var(--paper);
+    padding: 40px;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  }
+
+  .article-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--ink);
+  }
+
+  .article-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    line-height: 1.2;
+    margin-bottom: 15px;
+  }
+
+  .byline {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .byline span.hot-take {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-left: 15px;
+    font-size: 0.75rem;
+  }
+
+  .article-content {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #2a2a2a;
+  }
+
+  .article-content p {
+    margin-bottom: 20px;
+  }
+
+  .article-content p::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    float: left;
+    line-height: 0.8;
+    margin-right: 10px;
+    margin-top: 5px;
+    color: var(--accent-brown);
+  }
+
+  .pull-quote {
+    font-size: 1.4rem;
+    font-style: italic;
+    color: var(--accent-brown);
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    padding: 20px 0;
+    margin: 30px 0;
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  .article-image {
+    width: 100%;
+    height: 350px;
+    background: linear-gradient(135deg, #d4c5b0, #a89f91);
+    margin: 30px 0;
+    border: 1px solid var(--border-light);
+    position: relative;
+  }
+
+  .article-image::after {
+    content: ' Supporting Image';
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 5px 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    border-radius: 3px;
+  }
+
+  .article-caption {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    color: #666;
+    font-style: italic;
+    margin-top: -25px;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  /* Reaction Buttons */
+  .reactions {
+    display: flex;
+    gap: 10px;
+    margin: 30px 0;
+    flex-wrap: wrap;
+  }
+
+  .reaction-btn {
+    background: var(--paper);
+    border: 1px solid var(--border-light);
+    padding: 8px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 3px;
+  }
+
+  .reaction-btn:hover {
+    background: var(--accent-brown);
+    color: var(--paper);
+    border-color: var(--accent-brown);
+  }
+
+  .write-response-btn {
+    background: var(--accent-brown);
+    color: var(--paper);
+    border: none;
+    padding: 12px 30px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 20px;
+  }
+
+  .write-response-btn:hover {
+    background: var(--ink);
+    transform: translateY(-2px);
+  }
+
+  /* ===== SIDEBAR ===== */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  /* Sticky Notes in Sidebar */
+  .sidebar-note {
+    padding: 20px;
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.15);
+    position: relative;
+    transition: transform 0.2s;
+  }
+
+  .sidebar-note:hover {
+    transform: scale(1.02) rotate(0deg) !important;
+    z-index: 10;
+  }
+
+  .sidebar-note::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  .note-yellow { background: var(--note-yellow); transform: rotate(-2deg); }
+  .note-yellow::before { background: #D32F2F; }
+  .note-pink { background: var(--note-pink); transform: rotate(1.5deg); }
+  .note-pink::before { background: #1976D2; }
+  .note-mint { background: var(--note-mint); transform: rotate(-1deg); }
+  .note-mint::before { background: #388E3C; }
+
+  .sidebar-note h4 {
+    font-family: 'Caveat', cursive;
+    font-size: 1.2rem;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .sidebar-note p {
+    font-family: 'Caveat', cursive;
+    font-size: 1rem;
+    color: #444;
+    line-height: 1.3;
+  }
+
+  .note-meta {
+    font-family: 'Caveat', cursive;
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ===== MORE ARTICLES SECTION ===== */
+  .more-articles {
+    grid-column: 1 / -1;
+    margin-top: 40px;
+    padding-top: 40px;
+    border-top: 3px double var(--ink);
+  }
+
+  .section-header {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--accent-brown);
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 8px;
+    margin-bottom: 25px;
+  }
+
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+
+  .article-card {
+    background: var(--paper);
+    padding: 25px;
+    border: 1px solid var(--border-light);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .article-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  }
+
+  .article-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .article-card .meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+  }
+
+  .article-card p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  .article-card .read-more {
+    display: inline-block;
+    margin-top: 15px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent-brown);
+    text-decoration: none;
+    border-bottom: 1px solid var(--accent-brown);
+  }
+
+  /* ===== FOOTER ===== */
+  .page-footer {
+    background: var(--paper);
+    text-align: center;
+    padding: 30px 20px;
+    border-top: 3px double var(--ink);
+    margin-top: 60px;
+  }
+  .page-footer p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: var(--accent-brown);
+    letter-spacing: 2px;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) {
+    .container { grid-template-columns: 1fr; }
+    .articles-grid { grid-template-columns: 1fr; }
+    .page-header h1 { font-size: 2.5rem; }
+    .article-header h1 { font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">CONTRARION</div>
+  <ul class="nav-links">
+    <li><a href="home.html">The Public Square</a></li>
+    <li><a href="#" class="active">The Press</a></li>
+    <li><a href="#">The Board</a></li>
+    <li><a href="#">The Arcade</a></li>
+  </ul>
+  <div style="font-family: 'Inter'; font-size: 0.85rem; cursor: pointer;">Login / Sign Up</div>
+</nav>
+
+<header class="page-header">
+  <h1>THE PRESS</h1>
+</header>
+
+<div class="container">
+  
+  <!-- MAIN ARTICLE -->
+  <article class="main-article">
+    <div class="article-header">
+      <h1>Is the Algorithm Killing Originality or Freeing the Next Generation?</h1>
+      <div class="byline">By Amara Osei · Opinion Editor · 2 Hrs Ago <span class="hot-take">HOT TAKE</span></div>
+    </div>
+
+    <div class="article-content">
+      <p>We scroll, we like, we share — and somewhere in that endless loop, the ideas that were supposed to be ours quietly become everyone else's. The feed is the new editor-in-chief, and nobody voted for it. Yet a counter-argument is gaining ground among students here: that the same algorithm which flattens taste also surfaces voices that would never have made it into the old gatekept press. Which side are you on?</p>
+
+      <div class="pull-quote">"The most dangerous opinion is one you were nudged into having without ever noticing the nudge."</div>
+
+      <p>Consider the campus newspaper of a decade ago. Three editors decided what mattered. If your voice didn't fit their vision, it didn't exist. Today, a first-year student with a hot take can reach ten thousand peers by midnight. The algorithm doesn't care about your credentials — it cares about engagement. That's terrifying. It's also liberating.</p>
+
+      <div class="article-image"></div>
+      <p class="article-caption">The digital age has transformed how we consume and create content. Photo by J. Martinez.</p>
+
+      <p>But here's the uncomfortable truth: we're trading one gatekeeper for another. The algorithm isn't neutral. It's designed to keep you scrolling, not thinking. Every "For You" page is a mirror reflecting your biases back at you, slightly amplified. The question isn't whether algorithms are good or bad — it's whether we're aware enough to fight back.</p>
+
+      <p>Some argue that the solution is digital literacy. Teach students to recognize manipulation, to seek out opposing views, to pause before sharing. Others say that's naive — that the system is designed to bypass rational thought entirely. The dopamine hit of a viral post is stronger than any fact-check.</p>
+
+      <p>What's clear is that we're in the middle of an experiment. Nobody knows where this ends. But the students who will thrive are those who can hold two thoughts at once: that the algorithm gives us a voice, and that it also shapes what we say.</p>
+    </div>
+
+    <div class="reactions">
+      <button class="reaction-btn">🔥 Fire 148</button>
+      <button class="reaction-btn">👍 Agree 94</button>
+      <button class="reaction-btn">👎 Disagree 57</button>
+      <button class="reaction-btn">💬 Discuss 32</button>
+    </div>
+
+    <button class="write-response-btn">Write Your Response →</button>
+  </article>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    
+    <div class="sidebar-note note-yellow">
+      <h4>Related Opinion</h4>
+      <p>"I stopped reading the news and started thinking for myself. Best decision ever."</p>
+      <div class="note-meta"><span>@FreeThinker</span><span>🔥 203</span></div>
+    </div>
+
+    <div class="sidebar-note note-pink">
+      <h4>Counter Point</h4>
+      <p>"Algorithms introduced me to authors I'd never have found in a bookstore."</p>
+      <div class="note-meta"><span>@Bookworm</span><span>🔥 87</span></div>
+    </div>
+
+    <div class="sidebar-note note-mint">
+      <h4>Hot Take</h4>
+      <p>"The real problem isn't the algorithm — it's that we stopped teaching critical thinking."</p>
+      <div class="note-meta"><span>@ProfessorX</span><span>🔥 156</span></div>
+    </div>
+
+  </aside>
+
+  <!-- MORE ARTICLES -->
+  <section class="more-articles">
+    <div class="section-header">More from The Press</div>
+    
+    <div class="articles-grid">
+      
+      <div class="article-card">
+        <h3>Can faith and reason coexist in the modern world?</h3>
+        <div class="meta">Religion & Philosophy · 8 min read</div>
+        <p>An exploration of how contemporary thinkers reconcile spiritual belief with scientific rationality in an age of skepticism.</p>
+        <a href="#" class="read-more">Read More →</a>
+      </div>
+
+      <div class="article-card">
+        <h3>The loneliness epidemic: Why we're more connected yet more isolated than ever</h3>
+        <div class="meta">Social Life · 6 min read</div>
+        <p>Despite social media promising connection, rates of loneliness are skyrocketing. What are we missing?</p>
+        <a href="#" class="read-more">Read More →</a>
+      </div>
+
+      <div class="article-card">
+        <h3>The revival of ancient spiritual practices in Gen Z culture</h3>
+        <div class="meta">Spirituality · 7 min read</div>
+        <p>From tarot to meditation apps, young people are seeking meaning outside traditional religion.</p>
+        <a href="#" class="read-more">Read More →</a>
+      </div>
+
+      <div class="article-card">
+        <h3>Cultural appropriation vs. appreciation: Where do we draw the line?</h3>
+        <div class="meta">Culture · 9 min read</div>
+        <p>Navigating the complex terrain of cultural exchange in a globalized world without causing harm.</p>
+        <a href="#" class="read-more">Read More →</a>
+      </div>
+
+      <div class="article-card">
+        <h3>The death of privacy: Have we already lost the battle?</h3>
+        <div class="meta">Social Life · 5 min read</div>
+        <p>In an age of surveillance capitalism, is privacy even possible anymore? And should we care?</p>
+        <a href="#" class="read-more">Read More →</a>
+      </div>
+
+      <div class="article-card">
+        <h3>Why millennials are abandoning organized religion — and what they're finding instead</h3>
+        <div class="meta">Religion & Spirituality · 10 min read</div>
+        <p>A deep dive into the spiritual but not religious movement reshaping modern faith.</p>
+        <a href="#" class="read-more">Read More →</a>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<footer class="page-footer">
+  <p>The Press — Where Ideas Take Shape</p>
+</footer>
+
+</body>
+</html>
